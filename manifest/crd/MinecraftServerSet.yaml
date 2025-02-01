@@ -1,0 +1,31 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: minecraftserversets.mcoperator.anvilpowered.org
+spec:
+  group: mcoperator.anvilpowered.org
+  names:
+    kind: MinecraftServerSet
+    plural: minecraftserversets
+    singular: minecraftserverset
+    shortNames:
+      - mcss
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          description: A MinecraftServerSet is a set of minecraft servers that share the same configuration
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                mcClusterName:
+                  type: string
+                replicas:
+                  type: integer
+                image:
+                  type: string

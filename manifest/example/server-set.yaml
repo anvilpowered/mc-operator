@@ -1,0 +1,9 @@
+apiVersion: mcoperator.anvilpowered.org/v1alpha1
+kind: MinecraftServerSet
+metadata:
+  name: example
+  namespace: example
+spec:
+  mcClusterName: "example"
+  replicas: 3
+  image: "itzg/minecraft-server:latest"

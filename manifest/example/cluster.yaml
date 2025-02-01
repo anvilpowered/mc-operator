@@ -1,0 +1,7 @@
+apiVersion: mcoperator.anvilpowered.org/v1alpha1
+kind: MinecraftCluster
+metadata:
+  name: example
+  namespace: example
+spec:
+  minecraftStorageName: "example"

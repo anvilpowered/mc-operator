@@ -1,0 +1,11 @@
+apiVersion: mcoperator.anvilpowered.org/v1alpha1
+kind: MinecraftStorage
+metadata:
+  name: example
+  namespace: example
+spec:
+  primaryVolumeSpec:
+    storageClassName: "minecraft-example"
+    resources:
+      requests:
+        storage: 32Gi

@@ -1,1 +1,1 @@
-addSbtPlugin("dev.hnaderi" % "sbt-k8s" % "0.1.14")
+addSbtPlugin("com.coralogix" %% "zio-k8s-crd" % "3.1.0")

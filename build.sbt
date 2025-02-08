@@ -4,9 +4,14 @@ ThisBuild / scalaVersion := "3.6.3"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "mc-operator",
+    name := "mc-operator", // TODO: Come up with a new name?
+  )
+
+lazy val operator = (project in file("operator"))
+  .settings(
+    name := "operator",
     libraryDependencies ++= Seq(
-      "dev.zio" %% "zio" % "2.1.14",
+      "dev.zio" %% "zio" % "2.1.15",
       "com.coralogix" %% "zio-k8s-client" % "3.1.0",
     ) ++ Seq(
       "com.coralogix" %% "zio-k8s-client",
@@ -16,7 +21,7 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-generic",
       "io.circe" %% "circe-parser"
     ).map(_ % "0.14.10"),
-  )
+  ).enablePlugins(DockerPlugin)
 
 externalCustomResourceDefinitions := Seq(
   file("manifest/crd/MinecraftCluster.yaml"),

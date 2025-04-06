@@ -1,6 +1,6 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "3.6.3"
+ThisBuild / scalaVersion := "3.6.4"
 
 lazy val root = (project in file("."))
   .settings(
@@ -12,7 +12,6 @@ lazy val operator = (project in file("operator"))
     name := "operator",
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio" % "2.1.15",
-      "com.coralogix" %% "zio-k8s-client" % "3.1.0",
     ) ++ Seq(
       "com.coralogix" %% "zio-k8s-client",
       "com.coralogix" %% "zio-k8s-operator"
@@ -20,7 +19,7 @@ lazy val operator = (project in file("operator"))
       "io.circe" %% "circe-core",
       "io.circe" %% "circe-generic",
       "io.circe" %% "circe-parser"
-    ).map(_ % "0.14.10"),
+    ).map(_ % "0.14.12"),
   ).enablePlugins(DockerPlugin)
 
 externalCustomResourceDefinitions := Seq(

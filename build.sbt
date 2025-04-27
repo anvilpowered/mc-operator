@@ -1,38 +1,30 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
-
 ThisBuild / scalaVersion := "3.6.4"
-
-val zioK8sVersion = "3.1.0"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "mc-operator", // TODO: Come up with a new name?
+    name := "mc-operator",
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio" % "2.1.17",
-    ) ++ Seq(
-      "com.coralogix" %% "zio-k8s-client",
-    ).map(_ % zioK8sVersion) ++ Seq(
-      "org.typelevel" %% "cats-core" % "2.13.0"
-    ) ++ Seq(
-      "io.circe" %% "circe-core",
-      "io.circe" %% "circe-generic",
-      "io.circe" %% "circe-parser"
-    ).map(_ % "0.14.12"),
+      "io.fabric8" % "kubernetes-client" % "7.1.0",
+    ),
+    generateCRDs := {
+      val outputDir = (Compile / resourceManaged).value
+      CRDGen.generate(
+        outputDir = outputDir,
+        classpath = (Compile / fullClasspath).value.files,
+        classesDirs = Seq((Compile / classDirectory).value)
+      )
+    },
+    Compile / resourceGenerators += Def.task {
+      (resourceManaged.value ** "*.yaml").get
+    }.taskValue,
   )
 
 lazy val operator = (project in file("operator"))
   .settings(
-    name := "operator",
-    libraryDependencies ++= Seq(
-      "com.coralogix" %% "zio-k8s-operator"
-    ).map(_ % zioK8sVersion),
+    name := "operator"
   ).enablePlugins(DockerPlugin)
   .dependsOn(root)
 
-externalCustomResourceDefinitions := Seq(
-  file("manifest/crd/MinecraftCluster.yaml"),
-  file("manifest/crd/MinecraftServerSet.yaml"),
-  file("manifest/crd/MinecraftStorage.yaml"),
-)
-
-enablePlugins(K8sCustomResourceCodegenPlugin)
+lazy val generateCRDs = taskKey[Unit]("Generates CRDs using Fabric8 classes")

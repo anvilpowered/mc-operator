@@ -1,13 +1,23 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "3.6.4"
 
+val kubernetesClientVersion = "7.1.0"
+
 lazy val root = (project in file("."))
   .settings(
-    name := "mc-operator",
+    name := "mcadm",
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio" % "2.1.17",
-      "io.fabric8" % "kubernetes-client" % "7.1.0",
+      "io.fabric8" % "kubernetes-client" % kubernetesClientVersion,
     ),
+  )
+lazy val crd = (project in file("lib/crd"))
+  .settings(
+    name := "lib-crd",
+    libraryDependencies ++= Seq(
+      "io.fabric8" % "kubernetes-client",
+      "io.fabric8" % "generator-annotations"
+    ).map(_ % kubernetesClientVersion),
     generateCRDs := {
       val outputDir = (Compile / resourceManaged).value
       CRDGen.generate(
@@ -17,13 +27,13 @@ lazy val root = (project in file("."))
       )
     },
     Compile / resourceGenerators += Def.task {
-      (resourceManaged.value ** "*.yaml").get
+      (resourceManaged.value ** "*.yml").get
     }.taskValue,
   )
 
-lazy val operator = (project in file("operator"))
+lazy val operator = (project in file("app/operator"))
   .settings(
-    name := "operator"
+    name := "app-operator"
   ).enablePlugins(DockerPlugin)
   .dependsOn(root)
 

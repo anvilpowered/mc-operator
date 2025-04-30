@@ -1,3 +1,3 @@
 package org.anvilpowered.mcadm.crd
 
-type JUList = java.util.List
+type JUList[E] = java.util.List[E]

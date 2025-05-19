@@ -7,7 +7,6 @@ lazy val root = (project in file("."))
   .settings(
     name := "mcadm",
     libraryDependencies ++= Seq(
-      "dev.zio" %% "zio" % "2.1.17",
       "io.fabric8" % "kubernetes-client" % kubernetesClientVersion,
     ),
   )
